@@ -1,31 +1,31 @@
 # API Benchmarking Suite: Spring Boot vs Bun+Hono
 
-## Complete Applications:
+## Complete Applications
 - Fully functional Spring Boot API with multiple endpoints.
 - Bun+Hono TypeScript API with equivalent functionality.
 - Both include health checks, user endpoints, echo services, compute tasks and stats.
 
 
-## Multiple Benchmarking Tools:
+## Multiple Benchmarking Tools
 - Apache Bench script: Automated testing across all TPS levels.
 - Artillery.io config: Professional load testing with weighted scenarios.
 - Custom Node.js load tester: Advanced metrics and real-time monitoring.
 
 
-## Comprehensive Analysis:
+## Comprehensive Analysis
 - Python script for detailed performance analysis.
 - Automated chart generation.
 - Statistical comparisons and performance insights.
 
 
-## All TPS Levels Covered: 5, 10, 15, 30, 40, 100, and 1000 TPS with:
+## All TPS Levels Covered - 5, 10, 15, 30, 40, 100 and 1000 TPS with
 - Response time measurements (avg, P50, P95, P99)
 - Throughput analysis
 - Error rate tracking
 - Resource usage monitoring
 
 
-## Quick Start:
+## Quick Start
 - Build Spring Boot: mvn clean package && java -jar target/app.jar
 - Start Bun+Hono: bun install && bun run server.ts
 - Run Benchmark: ./benchmark.sh
