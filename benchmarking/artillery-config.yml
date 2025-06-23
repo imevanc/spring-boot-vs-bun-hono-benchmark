@@ -1,0 +1,96 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: "Warmup - 5 TPS"
+    - duration: 60
+      arrivalRate: 5
+      name: "5 TPS Test"
+    - duration: 60
+      arrivalRate: 10
+      name: "10 TPS Test"
+    - duration: 60
+      arrivalRate: 15
+      name: "15 TPS Test"
+    - duration: 60
+      arrivalRate: 30
+      name: "30 TPS Test"
+    - duration: 60
+      arrivalRate: 40
+      name: "40 TPS Test"
+    - duration: 60
+      arrivalRate: 100
+      name: "100 TPS Test"
+    - duration: 60
+      arrivalRate: 1000
+      name: "1000 TPS Test"
+  
+  # Configuration for connection handling
+  http:
+    timeout: 30
+    pool: 50
+    maxSockets: 50
+  
+  # Variables for dynamic content
+  variables:
+    userId:
+      - "1"
+      - "2"
+      - "3"
+      - "123"
+      - "456"
+      - "789"
+    
+scenarios:
+  - name: "Health Check"
+    weight: 30
+    flow:
+      - get:
+          url: "/health"
+          capture:
+            - json: "$.requestId"
+              as: "healthRequestId"
+  
+  - name: "User Lookup"
+    weight: 25
+    flow:
+      - get:
+          url: "/users/{{ userId }}"
+          capture:
+            - json: "$.requestId"
+              as: "userRequestId"
+  
+  - name: "Echo Test"
+    weight: 25
+    flow:
+      - post:
+          url: "/echo"
+          json:
+            test: "artillery-benchmark"
+            userId: "{{ userId }}"
+            timestamp: "{{ $timestamp }}"
+            data:
+              nested: true
+              value: "{{ $randomInt(1, 1000) }}"
+          capture:
+            - json: "$.requestId"
+              as: "echoRequestId"
+  
+  - name: "Compute Test"
+    weight: 15
+    flow:
+      - get:
+          url: "/compute"
+          capture:
+            - json: "$.requestId"
+              as: "computeRequestId"
+  
+  - name: "Stats Check"
+    weight: 5
+    flow:
+      - get:
+          url: "/stats"
+          capture:
+            - json: "$.totalRequests"
+              as: "totalRequests"
